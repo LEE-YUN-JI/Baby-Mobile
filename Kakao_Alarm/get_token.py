@@ -20,5 +20,5 @@ tokens = response.json()
 print(tokens)
 
 import json
-with open(r"C:\Users\yunji\codes\kakao_code.json","w") as fp:
+with open(r"C:\Users\yunji\codes\kakao_code.json","w") as fp: // json 파일을 저장할 위치 작성
     json.dump(tokens, fp)
