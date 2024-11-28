@@ -38,6 +38,7 @@ frame_global = None
 ser = None
 camera_active = False
 buzzer_on = False  # 부저 상태 추적
+message_sent = False
 
 def generate_frames():
     while True:
@@ -93,6 +94,7 @@ def main_loop():
 
                 if len(faces) > 0:
                     last_face_time = time.time()
+                    message_sent = False
                     if buzzer_on:
                         print("Face detected, stopping buzzer...")
                         ser.write(b"STOP_BUZZER\n")  # 부저 끔
@@ -103,6 +105,12 @@ def main_loop():
                             print("No face detected for 10 seconds, triggering buzzer...")
                         ser.write(b"START_BUZZER\n")  # 부저 계속 울림
                         buzzer_on = True
+                        if not message_sent:
+                            try:
+                                subprocess.run(['python3', '/home/pi/alarm_kakao/send_message.py'])
+                                message_sent = True
+                            except Exception as e:
+                                print(f"error: {e}")
 
                 for (x, y, w, h) in faces:
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
