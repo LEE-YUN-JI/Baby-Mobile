@@ -1,7 +1,7 @@
 import requests
 import json
 
-with open(r"C:\Users\yunji\codes\kakao_code.json","r") as fp:
+with open("/home/pi/alarm_kakao/kakao_code.json","r") as fp:
     tokens = json.load(fp)
 # print(tokens)
 # print(tokens["access_token"])
@@ -34,12 +34,12 @@ data={
     'receiver_uuids': '["{}"]'.format(friend_id),
     "template_object": json.dumps({
         "object_type":"text",
-        "text":"으악",
+        "text":"Danger",
         "link":{
-            "web_url":"www.daum.net",
-            "web_url":"www.naver.com"
+            "web_url":"http://192.168.137.207:5000",
+            "mobile_web_url":"http://192.168.137.207:5000"
         },
-        "button_title": "확인"
+        "button_title": "check"
     })
 }
 
