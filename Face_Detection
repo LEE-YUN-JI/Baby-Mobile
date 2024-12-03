@@ -33,7 +33,7 @@ picam2.start()
 face_cascade = cv2.CascadeClassifier('/home/pi/opencv-4.x/data/haarcascades/haarcascade_frontalface_alt.xml')
 
 last_face_time = time.time()
-FACE_TIMEOUT = 10  # 얼굴이 인식되지 않았을 때 부저 울리는 시간 (초)
+FACE_TIMEOUT = 10 
 frame_global = None
 ser = None
 camera_active = False
@@ -82,7 +82,7 @@ def main_loop():
                     print("Camera OFF")
                     frame_global = None
                     if buzzer_on:
-                        ser.write(b"STOP_BUZZER\n")  # 부저 끔
+                        ser.write(b"STOP_BUZZER\n")
                         buzzer_on = False
 
             if camera_active:
@@ -97,13 +97,13 @@ def main_loop():
                     message_sent = False
                     if buzzer_on:
                         print("Face detected, stopping buzzer...")
-                        ser.write(b"STOP_BUZZER\n")  # 부저 끔
+                        ser.write(b"STOP_BUZZER\n")
                         buzzer_on = False
                 else:
                     if time.time() - last_face_time > FACE_TIMEOUT:
                         if not buzzer_on:
                             print("No face detected for 10 seconds, triggering buzzer...")
-                        ser.write(b"START_BUZZER\n")  # 부저 계속 울림
+                        ser.write(b"START_BUZZER\n")
                         buzzer_on = True
                         if not message_sent:
                             try:
