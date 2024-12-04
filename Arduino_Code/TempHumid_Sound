@@ -1,0 +1,74 @@
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <DHT.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+
+#define DHTPIN 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+#define SWITCH1 3
+#define SWITCH2 4
+#define BUZZER 8
+
+bool cameraStatus = false;
+
+void setup() {
+  pinMode(SWITCH1, INPUT_PULLUP);
+  pinMode(SWITCH2, INPUT_PULLUP);
+  pinMode(BUZZER, OUTPUT);
+  Serial.begin(9600);  
+  lcd.init();
+  lcd.backlight();
+  dht.begin();
+  lcd.print("Initializing...");
+  delay(2000);
+}
+
+void loop() {
+  if (digitalRead(SWITCH1) == LOW) {
+    cameraStatus = true; 
+    Serial.println("ON");
+    delay(300);
+  }
+  if (digitalRead(SWITCH2) == LOW) {
+    cameraStatus = false; 
+    Serial.println("OFF");
+    delay(300); 
+  }
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  if (cameraStatus) {
+    lcd.print("Camera: ON");
+    Serial.println("Check Person"); 
+  } else {
+    lcd.print("Camera: OFF");
+  }
+
+  float temp = dht.readTemperature();
+  float hum = dht.readHumidity();
+  lcd.setCursor(0, 1);
+  if (isnan(temp) || isnan(hum)) {
+    lcd.print("Error reading");
+  } else {
+    lcd.print("T:");
+    lcd.print(temp);
+    lcd.print("C H:");
+    lcd.print(hum);
+    lcd.print("%");
+  }
+
+  if (Serial.available() > 0) {
+  String command = Serial.readStringUntil('\n');
+  command.trim();
+
+  if (command == "START_BUZZER") {
+    tone(BUZZER, 261, 1000);
+  } else if (command == "STOP_BUZZER") {
+    noTone(BUZZER);
+  }
+}
+  delay(100); 
+}
