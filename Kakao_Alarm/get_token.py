@@ -1,7 +1,7 @@
 import requests
 
 url = 'https://kauth.kakao.com/oauth/token'
-rest_api_key = '1dc6c5c352ace9f21024a052a2b850c3' // 내 애플리케이션 → 앱 키 → REST API 키
+rest_api_key = '내 애플리케이션 → 앱 키 → REST API 키' 
 redirect_uri = 'https://example.com/oauth'
 authorize_code = 'SbNgn_QOMWhZW9CyMUIz4xeSibTEU_rZS_xF_-io2josT0oMs4eLPgAAAAQKPXKYAAABkzB0uze2W8wW6V7rJg'
 
